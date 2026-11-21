@@ -1,6 +1,7 @@
 from pathlib import Path
+from typing import Literal
 
-from pydantic import Field, SecretStr
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -14,8 +15,7 @@ class DatabaseSettings(BaseSettings):
     )
 
     host: str
-    port: int = Field(default=1433, ge=1, le=65535)
+    port: int | None = Field(default=None, ge=1, le=65535)
     database: str = "RestauControlDB"
-    username: str
-    password: SecretStr
     driver: str = "ODBC Driver 18 for SQL Server"
+    environment: Literal["local", "production"] = "production"

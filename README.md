@@ -4,7 +4,7 @@ Proyecto académico de gestión de restaurantes con FastAPI, Pydantic, SQLAlchem
 
 El alcance incluye productos, categorías, pedidos, mesas, reservaciones, pagos, inventario, ingredientes, proveedores, compras y usuarios. Los roles previstos son Administrador, Gerente, Mesero, Cocinero, Cajero y Cliente.
 
-Esta etapa incluye una API con una ruta de salud y una pantalla de inicio. La integración de las 21 tablas de RestauControlDB está pendiente de revisar los scripts originales.
+Esta etapa incluye una API con rutas de salud para FastAPI y SQL Server, y una pantalla de inicio. La integración de las 21 tablas de RestauControlDB está pendiente de revisar los scripts originales.
 
 ## Instalación en Windows
 
@@ -37,6 +37,10 @@ Abre `http://127.0.0.1:5173` o la dirección que indique Vite. Para compilar, ej
 
 ### SQL Server
 
-Esta etapa funciona sin servidor de base de datos ni credenciales. Para la futura integración, instala Microsoft ODBC Driver 18 para SQL Server y copia `backend/.env.example` a `backend/.env`. Completa el archivo local con los valores de una cuenta autorizada. Mantén las credenciales fuera de Git.
+Para comprobar la conexión, instala Microsoft ODBC Driver 18 para SQL Server y copia `backend/.env.example` a `backend/.env`. Configura `SQLSERVER_HOST` con el nombre del servidor. La conexión usa la cuenta de Windows que ejecuta FastAPI. Si la instancia usa un puerto específico, puedes definir `SQLSERVER_PORT`. Git excluye el archivo `.env`.
+
+Usa `SQLSERVER_ENVIRONMENT=local` solo para el desarrollo local. Ese valor mantiene el cifrado y omite la validación del certificado del servidor. El valor predeterminado, `production`, exige la validación del certificado.
+
+En Swagger, ejecuta `GET /api/v1/health/database`. Devuelve HTTP 200 con `{"status":"ok"}` cuando SQL Server responde, o HTTP 503 con `{"status":"unavailable"}` cuando falla la comprobación. La ruta `GET /api/v1/health` comprueba FastAPI sin conectarse a SQL Server.
 
 Consulta [la arquitectura](docs/arquitectura.md) y [el estado de los scripts](database/README.md).
